@@ -16,10 +16,12 @@ from ucb import main, trace, interact
 GOAL_SCORE = 100  # The goal of Hog is to score 100 points.
 
 
+# Not implememted
 
 TEAM_NAME = 'Daniel and his pet Ruby' # Change this line!
 
 def final_strategy(score, opponent_score):
+    raise NotImplementedError("Final strategy is not implemented yet.")
     return 5
 
 
