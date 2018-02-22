@@ -89,13 +89,30 @@ def prune_leaves(t, vals):
       2
       3
         5
-      6
+      6                                                                                   
     """
     #"*** YOUR CODE HERE ***"
+    if is_leaf(t):
+        if label(t) in vals:
+            #print(t)
+            return None
+        return t
 
+    new_brchs = []
+    for b in branches(t):
+        nb = prune_leaves(b, vals)
+        if nb:
+            new_brchs.append(nb)
+    #print(new_brchs)
+    return tree(label(t), new_brchs)
 
-
-
+'''
+t = tree(2)
+print(prune_leaves(t, (1, 2)))
+numbers = tree(1, [tree(2), tree(3, [tree(4), tree(5)]), tree(6, [tree(7)])])
+print_tree(numbers)
+print_tree(prune_leaves(numbers, (3, 4, 6, 7)))
+'''
 
 # Q9
 def sprout_leaves(t, vals):
