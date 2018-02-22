@@ -91,7 +91,7 @@ def prune_leaves(t, vals):
         5
       6
     """
-    "*** YOUR CODE HERE ***"
+    #"*** YOUR CODE HERE ***"
 
 
 
@@ -133,8 +133,8 @@ def sprout_leaves(t, vals):
     """
     #"*** YOUR CODE HERE ***"
     if is_leaf(t):
-        return tree(label(t), vals)
-    return tree(label(t), [sprout_leaves(b, vals) for b in branches(t)])
+        return tree(label(t), [tree(v) for v in vals])
+    return tree(label(t), [sprout_leaves(b, vals) for b in branches(t) if is_tree(b)])
 
 
 
@@ -174,4 +174,16 @@ def add_trees(t1, t2):
         5
       5
     """
-    "*** YOUR CODE HERE ***"
+    #"*** YOUR CODE HERE ***"
+    
+
+
+
+
+
+
+
+
+
+
+
