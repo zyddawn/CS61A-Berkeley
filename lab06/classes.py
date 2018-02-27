@@ -5,6 +5,7 @@ class Player(object):
         """Create a player object."""
         self.name = name
         self.place = place
+        self.backpack = []
 
     def look(self):
         self.place.look()
@@ -35,7 +36,10 @@ class Player(object):
         destination_place = self.place.get_neighbor(location)
         if destination_place.locked:
             print(destination_place.name, 'is locked! Go look for a key to unlock it')
-        "*** YOUR CODE HERE ***"
+        #"*** YOUR CODE HERE ***"
+        else:
+            self.place = destination_place
+        print("You are at", self.place.name)
 
 
     def talk_to(self, person):
@@ -53,7 +57,13 @@ class Player(object):
         """
         if type(person) != str:
             print('Person has to be a string.')
-        "*** YOUR CODE HERE ***"
+        #"*** YOUR CODE HERE ***"
+        else:
+            character_dict = self.place.characters
+            if person not in character_dict:
+                print("%s is not here." % person)
+            else:
+                print("%s says: %s" % (person, character_dict[person].talk()))
 
 
     def take(self, thing):
@@ -79,7 +89,18 @@ class Player(object):
         """
         if type(thing) != str:
             print('Thing should be a string.')
-        "*** YOUR CODE HERE ***"
+        #"*** YOUR CODE HERE ***"
+        # in case that backpack has been created and holds something, no need to create again
+        else:
+            thing_dict = self.place.things
+            if thing not in thing_dict:
+                print("%s is not there." % thing)
+            else:
+                cur_thing = thing_dict[thing]
+                self.backpack.append(cur_thing)
+                print("Player takes the %s" % cur_thing.name)
+                thing_dict.pop(thing)
+
 
     def check_backpack(self):
         """Print each item with its description and return a list of item names.
@@ -117,6 +138,7 @@ class Player(object):
                 print('   ', item.name, '-', item.description)
         return [item.name for item in self.backpack]
 
+
     def unlock(self, place):
         """If player has a key, unlock a locked neighboring place.
 
@@ -151,7 +173,13 @@ class Player(object):
         for item in self.backpack:
             if type(item) == Key:
                 key = item
-        "*** YOUR CODE HERE ***"
+        # "*** YOUR CODE HERE ***"
+                break
+        if key:
+            key.use(self.place.exits[place][0])
+        else:
+            print("%s can't be unlocked without a key!" % place)
+
 
 
 class Character(object):
@@ -172,6 +200,14 @@ class Thing(object):
         print("You can't use a {0} here".format(self.name))
 
 """ Implement Key here! """
+class Key(Thing):
+    def use(self, place):
+        if place.locked:
+            place.locked = False
+            print("%s is now unlocked!" % place.name)
+        else:
+            print("%s is already unlocked!" % place.name)
+
 
 class Treasure(Thing):
     def __init__(self, name, description, value, weight):
@@ -187,7 +223,7 @@ class Place(object):
         self.things = {thing.name: thing for thing in things}
         self.locked = False
         self.exits = {} # {'name': (exit, 'description')}
-
+    
     def look(self):
         print('You are currently at ' + self.name + '. You take a look around and see:')
         print('Characters:')
