@@ -89,7 +89,7 @@ def prune_leaves(t, vals):
       2
       3
         5
-      6                                                                                   
+      6
     """
     #"*** YOUR CODE HERE ***"
     if is_leaf(t):
