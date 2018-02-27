@@ -101,6 +101,7 @@ def replace_leaf(t, old, new):
     >>> laerad == yggdrasil # Make sure original tree is unmodified
     True
     """
+    # "*** YOUR CODE HERE ***"
     if is_leaf(t) and label(t)==old: 	 # only apply changes to leaf value   
         return tree(new, [])
     return tree(label(t), [replace_leaf(b, old, new) for b in branches(t)])
@@ -247,7 +248,7 @@ def balanced(m):
         if is_mobile(side_struct):
             if balanced(side_struct):
                 return total_weight(side_struct) * length(s)
-            return -1
+            return -1       # a flag of non-balance
         return size(side_struct) * length(s)
     
     two_sides = sides(m)
@@ -386,10 +387,9 @@ def make_counter():
     #"*** YOUR CODE HERE ***"
     str_dict = {}
     def cnt_strnum(s):
-        try:
-            num = str_dict[s]       # test if s is already in str_dict
-            str_dict[s] = num + 1
-        except:
+        if s in str_dict:
+            str_dict[s] += 1
+        else:
             str_dict[s] = 1
         return str_dict[s]
     return cnt_strnum
@@ -529,10 +529,12 @@ def interval(a, b):
 def lower_bound(x):
     """Return the lower bound of interval x."""
     "*** YOUR CODE HERE ***"
+    return x[0]
 
 def upper_bound(x):
     """Return the upper bound of interval x."""
     "*** YOUR CODE HERE ***"
+    return x[1]
 
 def str_interval(x):
     """Return a string representation of interval x."""
@@ -548,23 +550,29 @@ def add_interval(x, y):
 def mul_interval(x, y):
     """Return the interval that contains the product of any value in x and any
     value in y."""
-    p1 = x[0] * y[0]
-    p2 = x[0] * y[1]
-    p3 = x[1] * y[0]
-    p4 = x[1] * y[1]
-    return [min(p1, p2, p3, p4), max(p1, p2, p3, p4)]
+    x_bound = [lower_bound(x), upper_bound(x)]
+    y_bound = [lower_bound(y), upper_bound(y)]
+    bounds = [bx*by for bx in x_bound for by in y_bound]
+    return interval(min(bounds), max(bounds))
 
 def sub_interval(x, y):
     """Return the interval that contains the difference between any value in x
     and any value in y."""
-    "*** YOUR CODE HERE ***"
+    #"*** YOUR CODE HERE ***"
+    lx, ux = lower_bound(x), upper_bound(x)
+    ly, uy = lower_bound(y), upper_bound(y)
+    return interval(lower_bound(x)-upper_bound(y), upper_bound(x)-lower_bound(y))
+
+
 
 def div_interval(x, y):
     """Return the interval that contains the quotient of any value in x divided by
     any value in y. Division is implemented as the multiplication of x by the
     reciprocal of y."""
     "*** YOUR CODE HERE ***"
-    reciprocal_y = interval(1/upper_bound(y), 1/lower_bound(y))
+    ly, uy = lower_bound(y), upper_bound(y)
+    assert ly * uy > 0, "Division ny 0"
+    reciprocal_y = interval(1.0/ly, 1.0/uy)      # it doesn't matter if a<=b in interval(a, b) due to the call of mul_interval
     return mul_interval(x, reciprocal_y)
 
 def par1(r1, r2):
@@ -585,12 +593,12 @@ def check_par():
     >>> lower_bound(x) != lower_bound(y) or upper_bound(x) != upper_bound(y)
     True
     """
-    r1 = interval(1, 1) # Replace this line!
-    r2 = interval(1, 1) # Replace this line!
+    r1 = interval(0.5, 1) # Replace this line!
+    r2 = interval(1, 3) # Replace this line!
     return r1, r2
 
 def multiple_references_explanation():
-    return """The multiple reference problem..."""
+    return "IDK..."
 
 def quadratic(x, a, b, c):
     """Return the interval that is the range of the quadratic defined by
@@ -602,6 +610,21 @@ def quadratic(x, a, b, c):
     '0 to 10'
     """
     "*** YOUR CODE HERE ***"
+    def f(cur):
+        return c + b*cur + a*cur**2
+    
+    extreme_point = -b*1.0/(2*a)
+    lx, ux = lower_bound(x), upper_bound(x)
+    fxl, fxu = f(lx), f(ux)
+    if lx <= extreme_point <= ux:
+        fe = f(extreme_point)
+        ub = max(fxl, fe, fxu)
+        lb = min(fxl, fe, fxu)
+        return interval(lb, ub)
+    ub = max(fxl, fxu)
+    lb = min(fxl, fxu)
+    return interval(lb, ub)
+
 
 def polynomial(x, c):
     """Return the interval that is the range of the polynomial defined by
@@ -615,4 +638,4 @@ def polynomial(x, c):
     '18.0 to 23.0'
     """
     "*** YOUR CODE HERE ***"
-
+    return "This is a little hard..."
