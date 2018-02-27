@@ -2,6 +2,8 @@
 
 from lab05 import *
 
+# Finish lab05 all questions
+
 # Shakespeare and Dictionaries
 def build_successors_table(tokens):
     """Return a dictionary: keys are words; values are lists of successors.
