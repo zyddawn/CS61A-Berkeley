@@ -106,13 +106,6 @@ def prune_leaves(t, vals):
     #print(new_brchs)
     return tree(label(t), new_brchs)
 
-'''
-t = tree(2)
-print(prune_leaves(t, (1, 2)))
-numbers = tree(1, [tree(2), tree(3, [tree(4), tree(5)]), tree(6, [tree(7)])])
-print_tree(numbers)
-print_tree(prune_leaves(numbers, (3, 4, 6, 7)))
-'''
 
 # Q9
 def sprout_leaves(t, vals):
@@ -192,13 +185,15 @@ def add_trees(t1, t2):
       5
     """
     #"*** YOUR CODE HERE ***"
+    branches_1, branches_2 = branches(t1), branches(t2)
+    l1, l2 = len(branches_1), len(branches_2)
+    brchs = [add_trees(b1, b2) for b1, b2 in zip(branches_1, branches_2)]
+    if l1 > l2:
+        brchs += branches_1[l2: ]
+    elif l1 < l2:
+        brchs += branches_2[l1: ]
+    return tree(label(t1)+label(t2), brchs)
     
-
-
-
-
-
-
 
 
 
