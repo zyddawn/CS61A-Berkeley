@@ -25,7 +25,6 @@ def is_tree(tree):
 
 
 
-
 def is_leaf(tree):
     """Returns True if the given tree's list of branches is empty, and False
     otherwise.
