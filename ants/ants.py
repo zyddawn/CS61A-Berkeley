@@ -24,7 +24,8 @@ class Place(object):
         self.entrance = None  # A Place
         # Phase 1: Add an entrance to the exit
         # BEGIN Problem 2
-        "*** YOUR CODE HERE ***"
+        if exit:
+        	exit.entrance = self
         # END Problem 2
 
     def add_insect(self, insect):
@@ -137,7 +138,7 @@ class Bee(Insect):
         """Return True if this Bee cannot advance to the next Place."""
         # Phase 4: Special handling for NinjaAnt
         # BEGIN Problem 7
-        return self.place.ant is not None
+        return self.place.ant is not None and self.place.ant.blocks_path == True
         # END Problem 7
 
     def action(self, colony):
@@ -158,6 +159,7 @@ class Ant(Insect):
     is_ant = True
     implemented = False  # Only implemented Ant classes should be instantiated
     food_cost = 0
+    blocks_path = True
 
     def __init__(self, armor=1):
         """Create an Ant with an ARMOR quantity."""
@@ -174,6 +176,7 @@ class HarvesterAnt(Ant):
 
     name = 'Harvester'
     implemented = True
+    food_cost = 2
 
     def action(self, colony):
         """Produce 1 additional food for the COLONY.
@@ -181,7 +184,7 @@ class HarvesterAnt(Ant):
         colony -- The AntColony, used to access game state information.
         """
         # BEGIN Problem 1
-        "*** YOUR CODE HERE ***"
+        colony.food += 1
         # END Problem 1
 
 
@@ -191,6 +194,9 @@ class ThrowerAnt(Ant):
     name = 'Thrower'
     implemented = True
     damage = 1
+    food_cost = 3
+    min_range = 0
+    max_range=float('inf')
 
     def nearest_bee(self, hive):
         """Return the nearest Bee in a Place that is not the HIVE, connected to
@@ -199,7 +205,14 @@ class ThrowerAnt(Ant):
         This method returns None if there is no such Bee (or none in range).
         """
         # BEGIN Problem 3 and 4
-        return random_or_none(self.place.bees)
+        distance = 0
+        search_place = self.place
+        while search_place is not hive:
+        	if self.min_range <= distance <= self.max_range and search_place.bees:
+        		return random_or_none(search_place.bees)
+        	search_place = search_place.entrance    # continue searching forward until finding a bee or is hive
+        	distance += 1
+        return None
         # END Problem 3 and 4
 
     def throw_at(self, target):
@@ -234,10 +247,11 @@ class Water(Place):
 class FireAnt(Ant):
     """FireAnt cooks any Bee in its Place when it expires."""
 
+    food_cost = 5
     name = 'Fire'
     damage = 3
     # BEGIN Problem 5
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem 5
 
     def reduce_armor(self, amount):
@@ -246,25 +260,34 @@ class FireAnt(Ant):
         the current place.
         """
         # BEGIN Problem 5
-        "*** YOUR CODE HERE ***"
+        self.armor -= amount
+        if self.armor <= 0:
+        	attack_bees = self.place.bees[:]
+        	for b in attack_bees:
+        		b.reduce_armor(self.damage)
+        	self.place.remove_insect(self)    # must attack bees before being removed
         # END Problem 5
 
 
 class LongThrower(ThrowerAnt):
     """A ThrowerAnt that only throws leaves at Bees at least 5 places away."""
 
+    food_cost = 2
     name = 'Long'
     # BEGIN Problem 4
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    min_range = 5
     # END Problem 4
 
 
 class ShortThrower(ThrowerAnt):
     """A ThrowerAnt that only throws leaves at Bees at most 3 places away."""
 
+    food_cost = 2
     name = 'Short'
     # BEGIN Problem 4
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    max_range = 3
     # END Problem 4
 
 
@@ -279,12 +302,16 @@ class NinjaAnt(Ant):
     name = 'Ninja'
     damage = 1
     # BEGIN Problem 7
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    blocks_path = False
+    food_cost = 5
     # END Problem 7
 
     def action(self, colony):
-        # BEGIN Problem 7
-        "*** YOUR CODE HERE ***"
+        # BEGIN Problem 
+        attack_bees = self.place.bees[:]
+        for b in attack_bees:
+            b.reduce_armor(self.damage)
         # END Problem 7
 
 
@@ -299,22 +326,31 @@ class HungryAnt(Ant):
     """
     name = 'Hungry'
     # BEGIN Problem 6
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    time_to_digest = 3
+    food_cost = 4
     # END Problem 6
 
     def __init__(self):
         # BEGIN Problem 6
-        "*** YOUR CODE HERE ***"
+        super().__init__()  		# initialize armor as Ant class
+        self.digesting = 0
         # END Problem 6
 
     def eat_bee(self, bee):
         # BEGIN Problem 6
-        "*** YOUR CODE HERE ***"
+        bee.armor = 0
+        self.place.remove_insect(bee)
         # END Problem 6
 
     def action(self, colony):
         # BEGIN Problem 6
-        "*** YOUR CODE HERE ***"
+        if self.digesting > 0:
+        	self.digesting -= 1
+        else:
+        	if self.place.bees:
+        		self.eat_bee(random_or_none(self.place.bees))
+        		self.digesting = self.time_to_digest
         # END Problem 6
 
 
