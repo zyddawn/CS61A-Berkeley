@@ -217,11 +217,11 @@ class ThrowerAnt(Ant):
         """
         # BEGIN Problem 3 and 4
         distance = 0
-        search_place = self.place
-        while search_place is not hive:
-        	if self.min_range <= distance <= self.max_range and search_place.bees:
-        		return random_or_none(search_place.bees)
-        	search_place = search_place.entrance    # continue searching forward until finding a bee or is hive
+        next_p = self.place
+        while next_p is not hive:
+        	if self.min_range <= distance <= self.max_range and next_p.bees:
+        		return random_or_none(next_p.bees)
+        	next_p = next_p.entrance    # continue searching forward until finding a bee or is hive
         	distance += 1
         return None
         # END Problem 3 and 4
@@ -469,17 +469,19 @@ class QueenAnt(ScubaThrower):
             self.armor = 0
             self.place.remove_insect(self)
         else:
-            search_place = self.place.exit
-            while search_place:
-                if search_place.ant:
-                    if not search_place.ant.damage_doubled:
-                        search_place.ant.damage *= 2
-                        search_place.ant.damage_doubled = True
-                    if search_place.ant.container and \
-                        search_place.ant.ant and not search_place.ant.ant.damage_doubled:
-                        search_place.ant.ant.damage *= 2
-                        search_place.ant.ant.damage_doubled = True
-                search_place = search_place.exit
+            next_p = self.place.exit
+            while next_p:
+                if next_p.ant:
+                    if not next_p.ant.damage_doubled:
+                        next_p.ant.damage *= 2
+                        next_p.ant.damage_doubled = True
+                    
+                    if next_p.ant.container and \
+                        next_p.ant.ant and not next_p.ant.ant.damage_doubled:
+                        next_p.ant.ant.damage *= 2
+                        next_p.ant.ant.damage_doubled = True
+                
+                next_p = next_p.exit
             ThrowerAnt.action(self, colony)
         # END Problem 13
 
@@ -537,7 +539,8 @@ class SlowThrower(ThrowerAnt):
 
     name = 'Slow'
     # BEGIN Problem EC
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    food_cost = 4
     # END Problem EC
 
     def throw_at(self, target):
@@ -550,7 +553,8 @@ class StunThrower(ThrowerAnt):
 
     name = 'Stun'
     # BEGIN Problem EC
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    food_cost = 6
     # END Problem EC
 
     def throw_at(self, target):
