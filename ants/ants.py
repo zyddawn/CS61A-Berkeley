@@ -67,7 +67,8 @@ class Place(object):
         if insect.is_ant:
             # Special handling for QueenAnt
             # BEGIN Problem 13
-            "*** YOUR CODE HERE ***"
+            if isinstance(insect, QueenAnt) and insect.true_queen:
+                return None
             # END Problem 13
 
             # Special handling for BodyguardAnt
@@ -95,6 +96,7 @@ class Insect(object):
 
     is_ant = False
     damage = 0
+    watersafe = False
 
     def __init__(self, armor, place=None):
         """Create an Insect with an ARMOR amount and a starting PLACE."""
@@ -130,6 +132,7 @@ class Bee(Insect):
 
     name = 'Bee'
     damage = 1
+    watersafe = True
 
     def sting(self, ant):
         """Attack an ANT, reducing its armor by 1."""
@@ -167,6 +170,7 @@ class Ant(Insect):
     food_cost = 0
     blocks_path = True
     container = False
+    damage_doubled = False
 
     def __init__(self, armor=1):
         """Create an Ant with an ARMOR quantity."""
@@ -247,7 +251,9 @@ class Water(Place):
     def add_insect(self, insect):
         """Add INSECT if it is watersafe, otherwise reduce its armor to 0."""
         # BEGIN Problem 11
-        "*** YOUR CODE HERE ***"
+        Place.add_insect(self, insect)
+        if not insect.watersafe:
+            insect.reduce_armor(insect.armor)
         # END Problem 11
 
 
@@ -331,6 +337,19 @@ class NinjaAnt(Ant):
 
 # BEGIN Problem 12
 # The ScubaThrower class
+class ScubaThrower(ThrowerAnt):
+    food_cost = 6
+    watersafe = True
+    name = 'Scuba'
+    implemented = True
+
+    def __init__(self):
+        super().__init__(1)
+
+    def reduce_armor(self, amount):
+        if not isinstance(self.place, Water):    # if it's not in water, it could be attacked
+            return super().reduce_armor(amount) 
+        return None
 # END Problem 12
 
 
@@ -420,18 +439,23 @@ class TankAnt(BodyguardAnt):
         # END Problem 10
 
 # BEGIN Problem 13
-class QueenAnt(Ant):  # You should change this line
+class QueenAnt(ScubaThrower):
 # END Problem 13
     """The Queen of the colony. The game is over if a bee enters her place."""
 
     name = 'Queen'
     # BEGIN Problem 13
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    food_cost = 7
+    true_queen = True
     # END Problem 13
 
     def __init__(self):
         # BEGIN Problem 13
-        "*** YOUR CODE HERE ***"
+        super().__init__()
+        self.true_queen = QueenAnt.true_queen
+        if QueenAnt.true_queen:
+            QueenAnt.true_queen = False     # all following queens are fake
         # END Problem 13
 
     def action(self, colony):
@@ -441,7 +465,22 @@ class QueenAnt(Ant):  # You should change this line
         Impostor queens do only one thing: reduce their own armor to 0.
         """
         # BEGIN Problem 13
-        "*** YOUR CODE HERE ***"
+        if not self.true_queen:
+            self.armor = 0
+            self.place.remove_insect(self)
+        else:
+            search_place = self.place.exit
+            while search_place:
+                if search_place.ant:
+                    if not search_place.ant.damage_doubled:
+                        search_place.ant.damage *= 2
+                        search_place.ant.damage_doubled = True
+                    if search_place.ant.container and \
+                        search_place.ant.ant and not search_place.ant.ant.damage_doubled:
+                        search_place.ant.ant.damage *= 2
+                        search_place.ant.ant.damage_doubled = True
+                search_place = search_place.exit
+            ThrowerAnt.action(self, colony)
         # END Problem 13
 
     def reduce_armor(self, amount):
@@ -449,7 +488,9 @@ class QueenAnt(Ant):  # You should change this line
         remaining, signal the end of the game.
         """
         # BEGIN Problem 13
-        "*** YOUR CODE HERE ***"
+        super().reduce_armor(amount)
+        if self.armor <= 0 and self.true_queen:
+            bees_win()
         # END Problem 13
 
 class AntRemover(Ant):
