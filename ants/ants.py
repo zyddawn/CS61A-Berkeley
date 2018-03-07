@@ -516,6 +516,11 @@ def make_slow(action):
     """
     # BEGIN Problem EC
     "*** YOUR CODE HERE ***"
+    def ACTION(colony):
+        if colony.time%2 == 0:
+            return action(colony)
+        return None
+    return ACTION
     # END Problem EC
 
 def make_stun(action):
@@ -525,12 +530,24 @@ def make_stun(action):
     """
     # BEGIN Problem EC
     "*** YOUR CODE HERE ***"
+    def ACTION(colony):
+        return None
+    return ACTION
     # END Problem EC
 
 def apply_effect(effect, bee, duration):
     """Apply a status effect to a BEE that lasts for DURATION turns."""
     # BEGIN Problem EC
     "*** YOUR CODE HERE ***"
+    origin_method = bee.action
+    def effect_action(colony):
+        nonlocal duration
+        if duration == 0:
+            return origin_method(colony)
+        else:
+            duration -= 1
+            return effect(origin_method)(colony)
+    bee.action = effect_action
     # END Problem EC
 
 
