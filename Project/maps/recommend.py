@@ -19,8 +19,7 @@ def find_closest(location, centroids):
     [2.0, 3.0]
     """
     # BEGIN Question 3
-    dist_list = [(cur_cent, distance(location, cur_cent)) for cur_cent in centroids]
-    return min(dist_list, key=lambda cd: cd[1])[0]
+    return min(centroids, key=lambda cd: distance(location, cd))
     # END Question 3
 
 
@@ -49,12 +48,13 @@ def group_by_centroid(restaurants, centroids):
     restaurants closest to the same centroid.
     """
     # BEGIN Question 4
-    closest_cent = [find_closest(restaurant_location(rest), centroids) for rest in restaurants]
+    closest = lambda r: find_closest(restaurant_location(r), centroids)
+    closest_centroids = [[closest(r), r] for r in restaurants]
     groups = []
-    for cur_cent in centroids:
-        cent_grp = [restaurants[i] for i in range(len(restaurants)) if closest_cent[i] == cur_cent]
-        if len(cent_grp)>0:
-            groups.append(cent_grp)
+    for c in centroids:
+        subgroup = [pair[1] for pair in closest_centroids if pair[0] == c]
+        if len(subgroup)>0:
+            groups.append(subgroup)
     return groups
     # END Question 4
 
@@ -152,11 +152,12 @@ def rate_all(user, restaurants, feature_fns):
     reviewed = user_reviewed_restaurants(user, restaurants)
     # BEGIN Question 9
     ratings = {}
-    for rest in restaurants:
-        if rest in reviewed:
-            ratings[restaurant_name(rest)] = user_rating(user, restaurant_name(rest))
+    for r in restaurants:
+        name = restaurant_name(r)
+        if r in reviewed:
+            ratings[name] = user_rating(user, restaurant_name(r))
         else:
-            ratings[restaurant_name(rest)] = predictor(rest)
+            ratings[name] = predictor(r)
     return ratings
     # END Question 9
 
