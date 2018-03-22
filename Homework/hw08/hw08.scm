@@ -36,8 +36,12 @@
         (else #f))
 )
 
-(define (nodots s)
-  'YOUR-CODE-HERE
+(define (nodots s)              ;not quite understand this function
+  ;'YOUR-CODE-HERE
+  (cond ((null? s) nil)
+        ((number? s) (list s))    
+        ((pair? (car s)) (cons (nodots (car s)) (nodots (cdr s))))
+        (else (cons (car s) (nodots (cdr s)))))
 )
 
 ; Sets as sorted lists
@@ -46,9 +50,11 @@
 
 (define (contains? s v)
     (cond ((empty? s) #f)
-          'YOUR-CODE-HERE
-          (else nil) ; replace this line
-          ))
+          ;'YOUR-CODE-HERE
+          ((= (car s) v) #t)
+          ((> (car s) v) #f)
+          (else (contains? (cdr s) v)))
+)
 
 ; Equivalent Python code, for your reference:
 ;
@@ -67,15 +73,21 @@
 
 (define (add s v)
     (cond ((empty? s) (list v))
-          'YOUR-CODE-HERE
-          (else nil) ; replace this line
-          ))
+          ;'YOUR-CODE-HERE
+          ((= (car s) v) s)
+          ((> (car s) v) (cons v s))
+          (else (cons (car s) (add (cdr s) v))))
+)
+
+
 
 (define (intersect s t)
     (cond ((or (empty? s) (empty? t)) nil)
-          'YOUR-CODE-HERE
-          (else nil) ; replace this line
-          ))
+          ;'YOUR-CODE-HERE
+          ((= (car s) (car t)) (cons (car s) (intersect (cdr s) (cdr t))))
+          ((> (car s) (car t)) (intersect s (cdr t)))
+          (else (intersect (cdr s) t)))
+)
 
 ; Equivalent Python code, for your reference:
 ;
@@ -91,9 +103,14 @@
 ;         elif e2 < e1:
 ;             return intersect(set1, set2.rest)
 
+
 (define (union s t)
     (cond ((empty? s) t)
           ((empty? t) s)
-          'YOUR-CODE-HERE
-          (else nil) ; replace this line
-          ))
+          ;'YOUR-CODE-HERE
+          ((= (car s) (car t)) (cons (car s) (union (cdr s) (cdr t))))
+          ((> (car s) (car t)) (cons (car t) (union s (cdr t))))
+          (else (cons (car s) (union (cdr s) t))))
+)
+
+
