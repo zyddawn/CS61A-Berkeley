@@ -3,17 +3,25 @@
 
 ; Q5
 (define lst
-  'YOUR-CODE-HERE
+  ;'YOUR-CODE-HERE
+  (cons (cons 1 ()) (cons 2 (cons (cons 3 4) (cons 5 ()))))
 )
 
 ; Q6
 (define (composed f g)
-  'YOUR-CODE-HERE
+  ;'YOUR-CODE-HERE
+  (define (inner x)
+  	(f (g x))
+  )
+  inner
 )
 
 ; Q7
 (define (remove item lst)
-  'YOUR-CODE-HERE
+  ;'YOUR-CODE-HERE
+  (cond ((null? lst) nil)
+  		((= (car lst) item) (remove item (cdr lst)))
+  		(else (cons (car lst) (remove item (cdr lst)))))
 )
 
 
@@ -28,8 +36,12 @@
 ; Q8
 (define (max a b) (if (> a b) a b))
 (define (min a b) (if (> a b) b a))
+
 (define (gcd a b)
-  'YOUR-CODE-HERE
+  ;'YOUR-CODE-HERE
+  (cond ((= 0 (min a b)) (max a b))
+  		((= 0 (/ (max a b) (min a b))) (min a b))
+  		(else (gcd (- (max a b) (min a b)) (min a b))))
 )
 
 ;;; Tests
@@ -40,15 +52,33 @@
 
 ; Q9
 (define (no-repeats s)
-  'YOUR-CODE-HERE
+  ;'YOUR-CODE-HERE
+  (cond ((null? s) nil)
+  		(else (cons (car s) (no-repeats (remove (car s) (cdr s))))))  ;666!
 )
+
 
 ; Q10
 (define (substitute s old new)
-  'YOUR-CODE-HERE
+  ;'YOUR-CODE-HERE
+  (define first_v nil)
+  (cond ((null? s) nil)
+  		((pair? (car s)) (cons (substitute (car s) old new) (substitute (cdr s) old new)))
+  		((equal? (car s) old) (cons new (substitute (cdr s) old new)))
+  		(else (cons (car s) (substitute (cdr s) old new))))
 )
 
 ; Q11
 (define (sub-all s olds news)
-  'YOUR-CODE-HERE
+  ;'YOUR-CODE-HERE
+  (cond ((null? olds) s)
+  		(else (sub-all (substitute s (car olds) (car news)) (cdr olds) (cdr news))))
 )
+
+
+
+
+
+
+
+
