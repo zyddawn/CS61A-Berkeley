@@ -30,8 +30,7 @@
 
 (define (ordered? s)
   ;'YOUR-CODE-HERE
-  (cond ((null? s) #t)          ;hard to debug...
-        ((null? (cdr s)) #t)
+  (cond ((or (null? s) (null? (cdr s))) #t)          ;hard to debug...
         ((<= (car s) (cadr s)) (ordered? (cdr s)))
         (else #f))
 )
