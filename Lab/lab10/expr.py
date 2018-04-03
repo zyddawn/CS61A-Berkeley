@@ -109,10 +109,14 @@ class Name(Expr):
         ...     print('Exception raised!')
         Exception raised!
         """
-        "*** YOUR CODE HERE ***"
+        #"*** YOUR CODE HERE ***"
+        if self.string in env:
+            return env[self.string]
+        raise NameError('%s not in env!' % self.string)
 
     def __str__(self):
         return self.string
+
 
 class LambdaExpr(Expr):
     """A lambda expression, which evaluates to a `LambdaFunction`.
@@ -175,7 +179,11 @@ class CallExpr(Expr):
         >>> read('add(mul(3, 4), b)').eval(new_env)
         Number(14)
         """
-        "*** YOUR CODE HERE ***"
+        #"*** YOUR CODE HERE ***"
+        eval_operator = self.operator.eval(env)
+        eval_operands = [op.eval(env) for op in self.operands]
+        return eval_operator.apply(eval_operands)
+
 
     def __str__(self):
         function = str(self.operator)
