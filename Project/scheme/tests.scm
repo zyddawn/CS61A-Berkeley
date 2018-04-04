@@ -11,6 +11,14 @@
 ;;; ********************************
 ; BEGIN PROBLEM 0
 'replace-this-line
+(/ 1 0)
+; expect Error
+
+(+ 65535 1)
+; expect 65536
+
+(* 2147483648 2)
+; expect 4294967296
 ; END PROBLEM 0
 
 ;;; These are examples from several sections of "The Structure
