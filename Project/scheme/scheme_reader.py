@@ -148,7 +148,11 @@ def read_tail(src):
             # END PROBLEM 1
         elif src.current() == '.':
             # BEGIN PROBLEM 2
-            "*** YOUR CODE HERE ***"
+            #"*** YOUR CODE HERE ***"
+            print("src: ", src)
+            second = scheme_read(src)
+            print("second: ", second)
+            return second
             # END PROBLEM 2
         else:
             # BEGIN PROBLEM 1
