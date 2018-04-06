@@ -110,13 +110,11 @@ def scheme_read(src):
     val = src.remove_front() # Get the first token
     if val == 'nil':
         # BEGIN PROBLEM 1
-        #"*** YOUR CODE HERE ***"
-        return nil
+        "*** YOUR CODE HERE ***"
         # END PROBLEM 1
     elif val == '(':
         # BEGIN PROBLEM 1
-        #"*** YOUR CODE HERE ***"
-        return read_tail(src)
+        "*** YOUR CODE HERE ***"
         # END PROBLEM 1
     elif val == "'":
         # BEGIN PROBLEM 7
@@ -142,23 +140,15 @@ def read_tail(src):
             raise SyntaxError('unexpected end of file')
         elif src.current() == ')':
             # BEGIN PROBLEM 1
-            #"*** YOUR CODE HERE ***"
-            src.remove_front()
-            return nil
+            "*** YOUR CODE HERE ***"
             # END PROBLEM 1
         elif src.current() == '.':
             # BEGIN PROBLEM 2
-            #"*** YOUR CODE HERE ***"
-            print("src: ", src)
-            second = scheme_read(src)
-            print("second: ", second)
-            return second
+            "*** YOUR CODE HERE ***"
             # END PROBLEM 2
         else:
             # BEGIN PROBLEM 1
-            #"*** YOUR CODE HERE ***"
-            # first execute scheme_read then read_tail, src has been changed
-            return Pair(scheme_read(src), read_tail(src))  
+            "*** YOUR CODE HERE ***"
             # END PROBLEM 1
     except EOFError:
         raise SyntaxError('unexpected end of file')

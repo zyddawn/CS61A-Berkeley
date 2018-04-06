@@ -33,44 +33,56 @@ test = {
           >>> tokens = tokenize_lines(["(+ 1 ", "(23 4)) ("])
           >>> src = Buffer(tokens)
           >>> src.current()
-          '('
+          2562c1ff5c2fd136738cec508425ad6e
+          # locked
           >>> src.remove_front()
-          '('
+          2562c1ff5c2fd136738cec508425ad6e
+          # locked
           >>> src.current()
-          '+'
+          7cb705e44890ff0de05e8ac610e43827
+          # locked
           >>> src.remove_front()
-          '+'
+          7cb705e44890ff0de05e8ac610e43827
+          # locked
           >>> src.remove_front()
-          1
+          eb892a26497f936d1f6cae54aacc5f51
+          # locked
           >>> scheme_read(src)  # Returns and removes the next complete expression in src
-          Pair(23, Pair(4, nil))
+          e4aaa1bb82547d5c561e01aa92ee3d6f
+          # locked
           >>> src.current()
-          ')'
+          94a32bedd6cf1898cd8986f0b4e2d011
+          # locked
           """,
           'hidden': False,
-          'locked': False
+          'locked': True
         },
         {
           'code': r"""
           >>> scheme_read(Buffer(tokenize_lines(['(23 4)'])))
-          Pair(23, Pair(4, nil))
+          e4aaa1bb82547d5c561e01aa92ee3d6f
+          # locked
           >>> read_line('(23 4)')  # Shorter version of above!
-          Pair(23, Pair(4, nil))
+          e4aaa1bb82547d5c561e01aa92ee3d6f
+          # locked
           """,
           'hidden': False,
-          'locked': False
+          'locked': True
         },
         {
           'code': r"""
           >>> read_tail(Buffer(tokenize_lines([')'])))
-          nil
+          c24ff8c9a7d7a50f82648d25a4d8fbb1
+          # locked
           >>> read_tail(Buffer(tokenize_lines(['1 2 3)'])))
-          Pair(1, Pair(2, Pair(3, nil)))
+          4ced98984f008e5161274d6481e4b568
+          # locked
           >>> read_tail(Buffer(tokenize_lines(['2 (3 4))'])))
-          Pair(2, Pair(Pair(3, Pair(4, nil)), nil))
+          b27a7ad8eaed5119cfd16136ceb9ea5a
+          # locked
           """,
           'hidden': False,
-          'locked': False
+          'locked': True
         },
         {
           'code': r"""
@@ -95,10 +107,14 @@ test = {
         {
           'code': r"""
           >>> read_line("(+ (- 2 3) 1)")
-          Pair('+', Pair(Pair('-', Pair(2, Pair(3, nil))), Pair(1, nil)))
+          569af9099ed6ccade3e79b6d955b0405
+          # locked
+          # choice: Pair('+', Pair('-', Pair(2, Pair(3, Pair(1, nil)))))
+          # choice: Pair('+', Pair('-', Pair(2, Pair(3, nil))), Pair(1, nil))
+          # choice: Pair('+', Pair(Pair('-', Pair(2, Pair(3, nil))), Pair(1, nil)))
           """,
           'hidden': False,
-          'locked': False
+          'locked': True
         },
         {
           'code': r"""

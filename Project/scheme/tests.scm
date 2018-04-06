@@ -11,14 +11,6 @@
 ;;; ********************************
 ; BEGIN PROBLEM 0
 'replace-this-line
-(/ 1 0)
-; expect Error
-
-(+ 65535 1)
-; expect 65536
-
-(* 2147483648 2)
-; expect 4294967296
 ; END PROBLEM 0
 
 ;;; These are examples from several sections of "The Structure
@@ -64,9 +56,6 @@
    (+ (- 10 7)
       6))
 ; expect 57
-
-(let ((x 2)) ((begin (define x (+ x 1)) +) 3 (begin (define x (+ x 1)) x)))
-; expect 7
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Move the following (exit) line down the file to run additional tests. ;;;
@@ -575,6 +564,8 @@ one-through-four
 (add2xy 3 7)
 ; expect 13
 
+(let ((x 2)) ((begin (define x (+ x 1)) +) 3 (begin (define x (+ x 1)) x)))
+; expect 7
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Scheme Implementations ;;;
