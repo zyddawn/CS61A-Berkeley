@@ -86,7 +86,6 @@ class Frame:
             return self.bindings[symbol]
         elif self.parent is not None:
             return self.parent.lookup(symbol)
-        raise SchemeError("Symbol not found!")
         # END PROBLEM 3
         raise SchemeError('unknown identifier: {0}'.format(symbol))
 
