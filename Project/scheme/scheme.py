@@ -144,7 +144,14 @@ class PrimitiveProcedure(Procedure):
             python_args.append(args.first)
             args = args.second
         # BEGIN PROBLEM 4
-        "*** YOUR CODE HERE ***"
+        if self.use_env:
+            python_args.append(env)
+        try:
+            # (only for function arguments)
+            # '*' notation will take all arguments in the list out and pass them to the function
+            return self.fn(*python_args)
+        except:
+            raise SchemeError("Wrong number of arguments were passed.")
         # END PROBLEM 4
 
 class LambdaProcedure(Procedure):
