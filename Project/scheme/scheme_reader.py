@@ -161,7 +161,6 @@ def read_tail(src):
 
 
 
-
 # Convenience methods
 
 def buffer_input(prompt='scm> '):
