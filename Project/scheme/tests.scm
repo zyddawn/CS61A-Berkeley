@@ -9,8 +9,9 @@
 ;;; ********************************
 ;;; *** Add your own tests here! ***
 ;;; ********************************
+;'replace-this-line
+
 ; BEGIN PROBLEM 0
-'replace-this-line
 (/ 1 0)
 ; expect Error
 

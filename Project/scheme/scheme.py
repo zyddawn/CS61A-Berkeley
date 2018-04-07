@@ -31,7 +31,10 @@ def scheme_eval(expr, env, _=None): # Optional third argument is ignored
         return SPECIAL_FORMS[first](rest, env)
     else:
         # BEGIN PROBLEM 5
-        "*** YOUR CODE HERE ***"
+        procedure = scheme_eval(first, env, _)
+        check_procedure(procedure)
+        operands = rest.map(lambda x: scheme_eval(x, env, _))   # Pair class has map function
+        return scheme_apply(procedure, operands, env)
         # END PROBLEM 5
 
 def self_evaluating(expr):
