@@ -9,7 +9,6 @@
   (map (lambda (x) (cons first x)) rests)  
 )
 
-
 (define (zip pairs)
   'replace-this-line)
 
@@ -31,7 +30,7 @@
 (define (list-change total denoms)
   ; BEGIN PROBLEM 18
   'replace-this-line
-  )
+)
   ; END PROBLEM 18
 
 ;; Problem 19
