@@ -110,7 +110,12 @@ class Frame:
         """
         child = Frame(self) # Create a new child with self as the parent
         # BEGIN PROBLEM 11
-        "*** YOUR CODE HERE ***"
+        while formals is not nil and vals is not nil:
+            f, v = formals.first, vals.first
+            child.define(f, v)
+            formals, vals = formals.second, vals.second
+        if formals != vals:  # one of them is not nil
+            raise SchemeError
         # END PROBLEM 11
         return child
 
