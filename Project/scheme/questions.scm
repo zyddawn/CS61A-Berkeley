@@ -15,8 +15,13 @@
 ;; Returns a list of two-element lists
 (define (enumerate s)
   ; BEGIN PROBLEM 17
-  'replace-this-line
-  )
+  (define (index lst cur_i)
+    (if (null? lst) 
+        ()
+        (cons (cons cur_i (cons (car lst) nil)) (index (cdr lst) (+ cur_i 1))))
+  ) 
+  (index s 0)
+)
   ; END PROBLEM 17
 
 ;; Problem 18
