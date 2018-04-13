@@ -43,8 +43,9 @@ def trap(s, k):
     """
 	# "*** YOUR CODE HERE ***"
 	cnt = 0
+	s_iter = iter(s)
 	while cnt < k:
-		yield s[cnt]
+		yield next(s_iter)
 		cnt += 1
 	raise ValueError
 
