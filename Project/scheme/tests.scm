@@ -9,7 +9,6 @@
 ;;; ********************************
 ;;; *** Add your own tests here! ***
 ;;; ********************************
-;'replace-this-line
 
 ; BEGIN PROBLEM 0
 (/ 1 0)
@@ -21,7 +20,69 @@
 (* 2147483648 2)
 ; expect 4294967296
 
+*
+; expect #[*]
+
+(* 2 3 4 5)
+; expect 120
+
+(* 2 (/ 3 2))
+; expect 3
+
+(null? nil)
+; expect #t
+
+(pair? '(1 2 3 4))
+; expect #t
+
+(pair? '(1 2 . 3))
+; expect #t
+
+(pair? '(1 2 . 3 4))
+; expect Error
+
+(pair? nil)
+; expect #f
+
+(pair? ())
+; expect #f
+
+(define (foo x) 
+  (define (bar y)
+    (+ x y)
+  )
+  bar
+)
+; expect foo
+
+(foo 3)
+; expect (lambda (y) (+ x y))
+
+((foo 3) 4)
+; expect 7
+
+(begin (print 3) '(* 2 3 4 5))
+; expect (* 2 3 4 5)
+
+(and False 1/0 6)
+; expect #f
+
+(and 0 1/0 6)
+; expect Error
+
+(or 1 1/0 6)
+; expect 1
+
+(or False 1/0 6)
+; expect Error
+
+(cond ((> 1 2) 3) 
+      (else 5)
+)
+; expect 5
+
 ; END PROBLEM 0
+
 
 ;;; These are examples from several sections of "The Structure
 ;;; and Interpretation of Computer Programs" by Abelson and Sussman.
@@ -70,7 +131,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Move the following (exit) line down the file to run additional tests. ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(exit)
 
 
 ;;; 1.1.2
@@ -594,7 +654,6 @@ one-through-four
 ;;; Extra credit ;;;
 ;;;;;;;;;;;;;;;;;;;;
 
-(exit)
 
 ; Tail call optimization tests
 
@@ -621,7 +680,6 @@ one-through-four
 (sum 1001 0)
 ; expect 501501
 
-(exit)
 
 ; macro tests
 
