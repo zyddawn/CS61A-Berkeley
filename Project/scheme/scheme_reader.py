@@ -120,7 +120,7 @@ def scheme_read(src):
         # BEGIN PROBLEM 7
         return Pair("quote", Pair(scheme_read(src), nil))
         # END PROBLEM 7
-    elif val not in DELIMITERS:
+    elif val not  in DELIMITERS:
         return val
     else:
         raise SyntaxError('unexpected token: {0}'.format(val))

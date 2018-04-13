@@ -430,7 +430,11 @@ class MuProcedure(Procedure):
         self.body = body
 
     # BEGIN PROBLEM 16
-    "*** YOUR CODE HERE ***"
+    def make_call_frame(self, args, env):
+        """Make a frame that binds my formal parameters to ARGS, a Scheme list
+        of values, for a lexically-scoped call evaluated in environment ENV."""
+        new_env = env.make_child_frame(self.formals, args)
+        return new_env
     # END PROBLEM 16
 
     def __str__(self):
@@ -446,7 +450,8 @@ def do_mu_form(expressions, env):
     formals = expressions.first
     check_formals(formals)
     # BEGIN PROBLEM 16
-    "*** YOUR CODE HERE ***"
+    body = expressions.second
+    return MuProcedure(formals, body)
     # END PROBLEM 16
 
 SPECIAL_FORMS['mu'] = do_mu_form
