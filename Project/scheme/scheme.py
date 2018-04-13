@@ -57,10 +57,10 @@ def eval_all(expressions, env):
     # BEGIN PROBLEM 8
     if expressions is nil:
         return None
-    res = scheme_eval(expressions.first, env)
-    if expressions.second is nil:
-        return res
-    return eval_all(expressions.second, env)
+    while expressions.second is not nil:
+        scheme_eval(expressions.first, env)
+        expressions = expressions.second
+    return scheme_eval(expressions.first, env)
     # END PROBLEM 8
 
 ################
@@ -110,12 +110,12 @@ class Frame:
         """
         child = Frame(self) # Create a new child with self as the parent
         # BEGIN PROBLEM 11
-        while formals is not nil and vals is not nil:
+        if len(formals) != len(vals):
+            raise SchemeError
+        while formals is not nil:
             f, v = formals.first, vals.first
             child.define(f, v)
             formals, vals = formals.second, vals.second
-        if formals != vals:  # one of them is not nil
-            raise SchemeError
         # END PROBLEM 11
         return child
 
@@ -182,7 +182,7 @@ class LambdaProcedure(Procedure):
         """Make a frame that binds my formal parameters to ARGS, a Scheme list
         of values, for a lexically-scoped call evaluated in environment ENV."""
         # BEGIN PROBLEM 12
-        "*** YOUR CODE HERE ***"
+        return self.env.make_child_frame(self.formals, args)
         # END PROBLEM 12
 
     def __str__(self):
@@ -226,7 +226,7 @@ def do_define_form(expressions, env):
         # symbol = expressions.second           
         # if symbol.second is nil:            # ugly code!!! any method to optimize it???
         #    symbol = symbol.first
-        symbol = eval_all(expressions.second, env)
+        symbol = expressions.second.first
         # LATENT BUG & INCOMPLETE (not sure about the usage of "eval_all")
         value = scheme_eval(symbol, env)
         env.define(target, value)
