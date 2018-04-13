@@ -15,5 +15,7 @@
 )
 
 (define-macro (list-of expr for var in seq if filter-fn)
-  'YOUR-CODE-HERE
+  ;'YOUR-CODE-HERE
+  (list 'map (list 'lambda (list var) expr) (list 'filter (list 'lambda (list var) filter-fn) seq))
 )
+
