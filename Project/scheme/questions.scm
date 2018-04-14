@@ -30,8 +30,16 @@
 ;; List all ways to make change for TOTAL with DENOMS
 (define (list-change total denoms)
   ; BEGIN PROBLEM 18
-  'replace-this-line
+  (cond ((null? denoms) nil)
+        ((> (car denoms) total) (list-change total (cdr denoms)))
+        ((= total (car denoms)) (cons (cons (car denoms) nil)
+                                      (list-change total (cdr denoms))))
+        (else (append (cons-all (car denoms) (list-change (- total (car denoms)) denoms))
+                (cond ((null? (cdr denoms)) ())
+                      (else (list-change total (cdr denoms)))))
+        )
   )
+)
   ; END PROBLEM 18
 
 ;; Problem 19
