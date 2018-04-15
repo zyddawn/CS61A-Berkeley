@@ -10,8 +10,23 @@
 )
 
 
+(define (first-lst pairs)
+  (cond ((or (null? pairs) (null? (car pairs))) nil)
+        (else (cons (caar pairs) (first-lst (cdr pairs))))
+  )
+)
+
+(define (second-lst pairs)
+  (cond ((or (null? pairs) (null? (car pairs))) nil)
+        (else (cons (cadr (car pairs)) (second-lst (cdr pairs))))
+  )
+)
+
 (define (zip pairs)
-  'replace-this-line)
+  (cond ((or (null? pairs) (null? (car pairs))) (cons nil (cons nil nil)))
+        (else (cons (first-lst pairs) (cons (second-lst pairs) nil)))
+  )
+)
 
 ;; Problem 17
 ;; Returns a list of two-element lists
