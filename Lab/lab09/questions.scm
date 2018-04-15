@@ -70,32 +70,36 @@
 (define (let-to-lambda expr)
   (cond ((atom? expr)
          ; BEGIN PROBLEM 19
-         'replace-this-line
+         expr
          ; END PROBLEM 19
          )
         ((quoted? expr)
          ; BEGIN PROBLEM 19
-         'replace-this-line
+         (cons (let-to-lambda (car expr)) 
+               (cons ((let-to-lambda (cdr expr)))) nil))
          ; END PROBLEM 19
-         )
-        ((or (lambda? expr)
-             (define? expr))
-         (let ((form   (car expr))
-               (params (cadr expr))
-               (body   (cddr expr)))
-           ; BEGIN PROBLEM 19
-           'replace-this-line
-           ; END PROBLEM 19
-           ))
+        ((or (lambda? expr) (define? expr))
+             (let ((form   (car expr))
+                   (params (cadr expr))
+                   (body   (cddr expr)))
+              ; BEGIN PROBLEM 19
+              (cons form 
+                    (cons (let-to-lambda params) 
+                          (cons (let-to-lambda body) nil)))
+              ; END PROBLEM 19
+              )
+        )
         ((let? expr)
-         (let ((values (cadr expr))
-               (body   (cddr expr)))
-           ; BEGIN PROBLEM 19
-           'replace-this-line
-           ; END PROBLEM 19
+               (let ((values (cadr expr))
+                     (body   (cddr expr)))
+               ; BEGIN PROBLEM 19
+               (define vars (first-lst values)) 
+               (define nums (second-lst values)) 
+               (cons (cons 'lambda (cons vars (cons body nil))) nums)
+               ; END PROBLEM 19
            ))
         (else
          ; BEGIN PROBLEM 19
-         'replace-this-line
+         expr
          ; END PROBLEM 19
          )))
