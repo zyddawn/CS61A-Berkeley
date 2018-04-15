@@ -224,11 +224,7 @@ def do_define_form(expressions, env):
     if scheme_symbolp(target):
         check_form(expressions, 2, 2)
         # BEGIN PROBLEM 6
-        # symbol = expressions.second           
-        # if symbol.second is nil:            # ugly code!!! any method to optimize it???
-        #    symbol = symbol.first
         symbol = expressions.second.first
-        # LATENT BUG & INCOMPLETE (not sure about the usage of "eval_all")
         value = scheme_eval(symbol, env)
         env.define(target, value)
         return target
@@ -348,7 +344,13 @@ def make_let_frame(bindings, env):
 def do_define_macro(expressions, env):
     """Evaluate a define-macro form."""
     # BEGIN Problem 21
+    #definition = expressions.first
+    #name = definition.first
+    #body = expressions.second
     "*** YOUR CODE HERE ***"
+    #new_macro = MacroProcedure()
+    #new_macro.apply_macro(name, env)
+    #return name
     # END Problem 21
 
 
