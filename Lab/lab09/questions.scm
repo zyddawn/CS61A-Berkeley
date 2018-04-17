@@ -9,7 +9,6 @@
   (map (lambda (x) (cons first x)) rests)  
 )
 
-
 (define (first-lst pairs)
   (cond ((or (null? pairs) (null? (car pairs))) nil)
         (else (cons (caar pairs) (first-lst (cdr pairs))))
@@ -76,8 +75,8 @@
          )
         ((quoted? expr)
          ; BEGIN PROBLEM 19
-         expr
-         )
+         (cons (let-to-lambda (car expr)) 
+               (cons ((let-to-lambda (cdr expr)))) nil))
          ; END PROBLEM 19
         ((or (lambda? expr) (define? expr))
              (let ((form   (car expr))
@@ -85,7 +84,8 @@
                    (body   (cddr expr)))
               ; BEGIN PROBLEM 19
               (cons form 
-                    (cons params (map let-to-lambda body)))
+                    (cons (let-to-lambda params) 
+                          (cons (let-to-lambda body) nil)))
               ; END PROBLEM 19
               )
         )
@@ -95,12 +95,11 @@
                ; BEGIN PROBLEM 19
                (define vars (first-lst values)) 
                (define nums (second-lst values)) 
-               (cons (cons 'lambda (cons vars (let-to-lambda body))) 
-               		 (let-to-lambda nums))
+               (cons (cons 'lambda (cons vars (cons body nil))) nums)
                ; END PROBLEM 19
            ))
         (else
          ; BEGIN PROBLEM 19
-         (map let-to-lambda expr)
+         expr
          ; END PROBLEM 19
          )))
