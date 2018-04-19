@@ -15,11 +15,12 @@
 
 (define (has-cycle s)
   ;'YOUR-CODE-HERE
+  (define origin_s s)
   (define (is-equal s sub_s step1 step2)
     (cond ((null? sub_s) #f)
           ((eq? s sub_s) 
           	(if (= step1 step2)
-          		(is-equal s (cdr-stream sub_s) 0 (+ step2 1))
+          		(is-equal origin_s (cdr-stream sub_s) 0 (+ step2 1))
           		#t
           	)
           )
@@ -31,5 +32,17 @@
 
 
 (define (has-cycle-constant s)
-  'YOUR-CODE-HERE
+  (define (chase fast slow)
+  	(cond ((or (null? slow) (null? fast)) #f)
+  	      ((eq? fast slow) #t)
+  		  (else 
+  		  	(if (null? (cdr-stream fast)) 
+  		  		  #f
+  		  		  (chase (cdr-stream (cdr-stream fast)) (cdr-stream slow)))) 
+  	)
+  )
+  (if (or (null? s) (null? (cdr-stream s)))
+  	  #f
+  	  (chase (cdr-stream s) s)
+  )
 )
