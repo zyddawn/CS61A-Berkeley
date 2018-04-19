@@ -7,7 +7,11 @@
 )
 
 (define (scale-stream s k)
-  'YOUR-CODE-HERE
+  ;'YOUR-CODE-HERE
+  (cond ((null? s) nil)
+  		(else (cons-stream (* 2 (car s)) (scale-stream (cdr-stream s) k)))
+  )
+
 )
 
 (define (has-cycle s)
