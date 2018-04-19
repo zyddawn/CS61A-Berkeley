@@ -9,7 +9,11 @@ CREATE TABLE greatstudents AS
 
 -- Q6
 CREATE TABLE sevens AS
-  SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+  SELECT s.seven
+  FROM students as s, checkboxes as c
+  WHERE s.time = c.time AND s.number = 7 AND
+  		c.'7' = 'True';
+
 
 
 -- Q7
