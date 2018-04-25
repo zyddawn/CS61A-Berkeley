@@ -20,7 +20,6 @@
 )
 
 
-
 ; Q2
 (define (tail-replicate x n)
   ;'YOUR-CODE-HERE

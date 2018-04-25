@@ -18,5 +18,10 @@ def permutations(lst):
     """
     if not lst:
         yield []
-        return
-    "*** YOUR CODE HERE ***"
+        # return None
+    # "*** YOUR CODE HERE ***"
+    cur_list = [lst[0]]
+    cur_list.extend(permutations(lst[1:]))
+    yield cur_list
+    # yield cur_list.extend(permutations(lst[1:]))
+    # yield lst
