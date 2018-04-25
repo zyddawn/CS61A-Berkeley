@@ -23,5 +23,12 @@
 
 ; Q2
 (define (tail-replicate x n)
-  'YOUR-CODE-HERE
+  ;'YOUR-CODE-HERE
+  (define (helper n my_list)
+  	 (if (= n 0)
+  	 	 my_list
+  	 	 (helper (- n 1) (cons x my_list))
+  	 )
+  )
+  (helper n nil)
 )
