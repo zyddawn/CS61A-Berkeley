@@ -31,7 +31,7 @@ CREATE TABLE sizes AS
 CREATE TABLE size_of_dogs AS
   SELECT name, size
   FROM dogs, sizes
-  WHERE heights BETWEEN min AND max;
+  WHERE min < height AND height <= max;
 
 
 -- All dogs with parents ordered by decreasing height of their parent
