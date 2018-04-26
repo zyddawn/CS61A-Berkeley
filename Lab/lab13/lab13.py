@@ -18,10 +18,12 @@ def permutations(lst):
     """
     if not lst:
         yield []
-        # return None
+        return None
     # "*** YOUR CODE HERE ***"
-    cur_list = [lst[0]]
-    cur_list.extend(permutations(lst[1:]))
-    yield cur_list
-    # yield cur_list.extend(permutations(lst[1:]))
-    # yield lst
+    sub_perm = permutations(lst[1:])
+    for i in range(len(lst)):
+        temp_perm = list(sub_perm).copy()
+        print(temp_perm)
+        temp_perm.insert(i, lst[0])
+        yield temp_perm
+    
