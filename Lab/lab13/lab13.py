@@ -20,10 +20,10 @@ def permutations(lst):
         yield []
         return None
     # "*** YOUR CODE HERE ***"
-    sub_perm = permutations(lst[1:])
-    for i in range(len(lst)):
-        temp_perm = list(sub_perm).copy()
-        print(temp_perm)
-        temp_perm.insert(i, lst[0])
-        yield temp_perm
+    for perm in permutations(lst[1:]):
+        for i in range(len(lst)):
+            temp_perm = perm.copy()
+            temp_perm.insert(i, lst[0])
+            # print(temp_perm)
+            yield temp_perm
     
