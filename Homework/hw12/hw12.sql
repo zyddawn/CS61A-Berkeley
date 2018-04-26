@@ -59,9 +59,31 @@ CREATE TABLE sentences AS
 
 -- Ways to stack 4 dogs to a height of at least 170, ordered by total height
 CREATE TABLE stacks_helper(dogs, stack_height, last_height);
-
 -- Add your INSERT INTOs here
-
+INSERT INTO stacks_helper 
+  SELECT name, height, height 
+  FROM dogs;
+INSERT INTO stacks_helper 
+  SELECT (name || ", " || dogs), stack_height + height, height 
+  FROM stacks_helper, dogs
+  WHERE height < last_height;
+INSERT INTO stacks_helper 
+  SELECT (name || ", " || dogs), stack_height + height, height 
+  FROM stacks_helper, dogs
+  WHERE height < last_height;
+INSERT INTO stacks_helper 
+  SELECT (name || ", " || dogs), stack_height + height, height 
+  FROM stacks_helper, dogs
+  WHERE height < last_height;
 
 CREATE TABLE stacks AS
-  SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+  SELECT dogs, stack_height
+  FROM stacks_helper
+  WHERE stack_height >= 170
+  ORDER BY stack_height;
+
+
+
+
+
+
